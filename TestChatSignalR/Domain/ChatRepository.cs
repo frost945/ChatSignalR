@@ -13,6 +13,7 @@ namespace TestChatSignalR.Domain
             _context = context;
         }
 
+        //в процессе доработки
         /*public async Task<List<ChatMessage>> GetMessagesAsync(string chatName, int count = 50, int skip = 0)
         {
             return await _context.ChatMessages

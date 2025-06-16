@@ -8,21 +8,19 @@ namespace TestChatSignalR.Hubs
    
     public class ChatHub : Hub
     {
+        private readonly ChatDbContext _db;
+        private readonly ChatRepository _chatRepository;
         private readonly SentimentService _sentimentService;
 
-        public ChatHub(SentimentService sentimentService)
+        public ChatHub(SentimentService sentimentService, ChatDbContext db, ChatRepository chatRepository)
         {
             _sentimentService = sentimentService;
+            _db = db;
+            _chatRepository = chatRepository;
         }
 
-        // private readonly ChatDbContext _db;
-        //private readonly ChatRepository _chatRepository;
-        /* public ChatHub(ChatDbContext db, ChatRepository chatRepository)
-         {
-             _db = db;
-             _chatRepository = chatRepository;
-         }*/
-
+        
+        //функция в процессе доработки
         /*public async Task LoadChatHistory(string chat, int skip = 0)
         {
             Console.WriteLine("LoadChatHistory on");
@@ -36,15 +34,15 @@ namespace TestChatSignalR.Hubs
 
         public async Task SendMessage(string user, string chat, string message)
         {
-            /* ChatMessage chatMessage = new ChatMessage
+             ChatMessage chatMessage = new ChatMessage
              {
                  UserName = user,
                  ChatName = chat,
                  Message = message
-             };*/
+             };
 
-            // _db.ChatMessages.Add(chatMessage);
-            //await _db.SaveChangesAsync();
+             _db.ChatMessages.Add(chatMessage);
+            await _db.SaveChangesAsync();
 
             string sentiment = await _sentimentService.AnalyzeSentimentAsync(message);
 
