@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+ï»¿using Microsoft.EntityFrameworkCore;
 using TestChatSignalR.Domain;
 using TestChatSignalR.Hubs;
 using TestChatSignalR.Services;
@@ -19,7 +19,7 @@ namespace TestChatSignalR
 
             builder.Services.AddSignalR();
 
-            //ïîäêëþ÷àåì àíàëèçàòîð íàñòðîåíèé
+            //Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡Ð°ÐµÐ¼ Ð°Ð½Ð°Ð»Ð¸Ð·Ð°Ñ‚Ð¾Ñ€ Ð½Ð°ÑÑ‚Ñ€Ð¾ÐµÐ½Ð¸Ð¹
             builder.Services.AddSingleton(provider =>
             {
                 var config = provider.GetRequiredService<IConfiguration>();
