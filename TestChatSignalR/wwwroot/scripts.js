@@ -1,21 +1,20 @@
 ﻿
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/chat")
+    //.withUrl("https://testchatsignalr-a5cyhghcf0fkdfg2.westeurope-01.azurewebsites.net/chat")
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
 connection.start().catch(err => console.error(err.toString()));
 
 //Отображает что подключился новый участник к чату
-function joinChat()
-{
+function joinChat() {
     user = document.getElementById("username").value.trim();
     chat = document.getElementById("chatname").value.trim();
 
     console.log("Подключаемся к чату", user, chat);
 
-    if (user && chat)
-    {
+    if (user && chat) {
         document.getElementById("login").style.display = "none";
         document.getElementById("chat").style.display = "block";
         document.getElementById("chat-title").innerText = `Чат: ${chat}`;
@@ -24,8 +23,7 @@ function joinChat()
         connection.invoke("joinChat", { userName: user, chatName: chat })
             .catch(err => console.error(err.toString()));
     }
-    else
-    {
+    else {
         alert("Введите имя и название чата");
     }
 }
@@ -45,8 +43,7 @@ function sendMessage() {
 
 
 //Получаем сообщение на клиенте
-connection.on("ReceiveMessage", (userName, chatName, message, sentiment) =>
-{
+connection.on("ReceiveMessage", (userName, chatName, message, sentiment) => {
     console.log("Получаем сообщение на клиенте");
     //const chatName = userConnection.chatName;
     //const userName = userConnection.userName;
@@ -66,36 +63,36 @@ connection.on("ReceiveMessage", (userName, chatName, message, sentiment) =>
     }
 });
 
-        /*  connection.on("ReceiveHistory", function (chat, messages) {
-        console.log("ReceiveHistory triggered!");
-    console.log("Chat ID:", chat);
-    console.log("Messages received:", messages);
+/*  connection.on("ReceiveHistory", function (chat, messages) {
+console.log("ReceiveHistory triggered!");
+console.log("Chat ID:", chat);
+console.log("Messages received:", messages);
 
-    if (Array.isArray(messages)) {
-        messages.reverse().forEach(msg => {
-            displayMessage(msg.user, msg.message);
-        });
-              } else {
-        console.warn("Received 'messages' is not an array:", messages);
-              }
-          });      
+if (Array.isArray(messages)) {
+messages.reverse().forEach(msg => {
+    displayMessage(msg.user, msg.message);
+});
+      } else {
+console.warn("Received 'messages' is not an array:", messages);
+      }
+  });      
 
-    let skip = 0;
+let skip = 0;
 
-    const chatBox = document.getElementById("messages");
+const chatBox = document.getElementById("messages");
 
-    if (chatBox) {
-        chatBox.addEventListener('scroll', function () {
-            if (chatBox.scrollTop === 0) {
-                skip += 50;
-                connection.invoke("LoadChatHistory", chat, skip);
-            }
-        });
-        } else {
-        console.error("Элемент chatBox не найден в DOM.");
-        }
-        */
+if (chatBox) {
+chatBox.addEventListener('scroll', function () {
+    if (chatBox.scrollTop === 0) {
+        skip += 50;
+        connection.invoke("LoadChatHistory", chat, skip);
+    }
+});
+} else {
+console.error("Элемент chatBox не найден в DOM.");
+}
+*/
 
-    
+
 
 

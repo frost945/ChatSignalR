@@ -10,23 +10,15 @@ namespace TestChatSignalR
     {
         public static async Task Main()
         {
+            var builder = WebApplication.CreateBuilder();
 
-
-
-
-            builder.Services.AddDbContext<ChatDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddDbContext<ChatDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<ChatRepository>();
 
-
-
-            builder.Services.AddScoped<ChatRepository>();
 
             builder.Services.AddSignalR();
-
 
             builder.Services.AddSingleton(provider =>
             {
@@ -41,7 +33,7 @@ namespace TestChatSignalR
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-           
+
             app.UseRouting();
 
             app.MapHub<ChatHub>("/chat");
