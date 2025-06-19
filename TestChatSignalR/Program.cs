@@ -10,16 +10,24 @@ namespace TestChatSignalR
     {
         public static async Task Main()
         {
-            var builder = WebApplication.CreateBuilder();
 
+
+
+
+            builder.Services.AddDbContext<ChatDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddDbContext<ChatDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<ChatRepository>();
 
+
+
+            builder.Services.AddScoped<ChatRepository>();
+
             builder.Services.AddSignalR();
 
-            //подключаем анализатор настроений
+
             builder.Services.AddSingleton(provider =>
             {
                 var config = provider.GetRequiredService<IConfiguration>();
