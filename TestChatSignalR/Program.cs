@@ -3,7 +3,6 @@ using TestChatSignalR.Domain;
 using TestChatSignalR.Hubs;
 using TestChatSignalR.Services;
 
-
 namespace TestChatSignalR
 {
     public class Program
@@ -16,7 +15,6 @@ namespace TestChatSignalR
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<ChatRepository>();
-
 
             builder.Services.AddSignalR();
 

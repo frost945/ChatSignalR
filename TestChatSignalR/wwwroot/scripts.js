@@ -8,13 +8,15 @@ const connection = new signalR.HubConnectionBuilder()
 connection.start().catch(err => console.error(err.toString()));
 
 //Отображает что подключился новый участник к чату
-function joinChat() {
+function joinChat()
+{
     user = document.getElementById("username").value.trim();
     chat = document.getElementById("chatname").value.trim();
 
     console.log("Подключаемся к чату", user, chat);
 
-    if (user && chat) {
+    if (user && chat)
+    {
         document.getElementById("login").style.display = "none";
         document.getElementById("chat").style.display = "block";
         document.getElementById("chat-title").innerText = `Чат: ${chat}`;
@@ -23,17 +25,20 @@ function joinChat() {
         connection.invoke("joinChat", { userName: user, chatName: chat })
             .catch(err => console.error(err.toString()));
     }
-    else {
+    else
+    {
         alert("Введите имя и название чата");
     }
 }
 
 //Отправляем сообщение на сервер
-function sendMessage() {
+function sendMessage()
+{
     console.log("Отправляем сообщение на сервер");
 
     const message = document.getElementById("messageInput").value.trim();
-    if (message) {
+    if (message)
+    {
         connection.invoke("SendMessage", { userName: user, chatName: chat }, message)
             .catch(err => console.error(err.toString()));
 
@@ -43,16 +48,17 @@ function sendMessage() {
 
 
 //Получаем сообщение на клиенте
-connection.on("ReceiveMessage", (userName, chatName, message, sentiment) => {
+connection.on("ReceiveMessage", (userName, chatName, message, sentiment) =>
+{
     console.log("Получаем сообщение на клиенте");
-    //const chatName = userConnection.chatName;
-    //const userName = userConnection.userName;
 
-    if (chatName === chat) {
+    if (chatName === chat)
+    {
         const msg = document.createElement("div");
         msg.textContent = `${userName}: ${message}`;
 
-        switch (sentiment) {
+        switch (sentiment)
+        {
             case "Positive": msg.classList.add("positive-msg"); break;
             case "Negative": msg.classList.add("negative-msg"); break;
             case "Neutral":
