@@ -3,9 +3,9 @@
 Демонстрация в реальном времени: https://testchatsignalr-a5cyhghcf0fkdfg2.westeurope-01.azurewebsites.net/
 
 Технологии:
-Backend: ASP.NET Core + SignalR, MS SQL
-Frontend: HTML, CSS, JavaScript
-Sentiment API:
+Backend: ASP.NET Core + SignalR, MS SQL;
+Frontend: HTML, CSS, JavaScript;
+Sentiment API
 
 Функции:
  - Обмен сообщениями в реальном времени (SignalR)
@@ -15,4 +15,4 @@ Sentiment API:
   Негативные — красные
   Нейтральные — серые
 
-Примечание: Запись сообщений в БД работает на localhost версии, версия проекта в Azure работает без записи в БД (функция в процессе доработки)
+
