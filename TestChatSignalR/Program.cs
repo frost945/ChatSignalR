@@ -29,6 +29,12 @@ namespace TestChatSignalR
 
             var app = builder.Build();
 
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                Console.WriteLine("IsDevelopment");
+            }
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
