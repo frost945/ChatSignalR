@@ -56,7 +56,16 @@ connection.on("ReceiveMessage", (userName, chatName, message, sentiment) =>
     {
         const msg = document.createElement("div");
         msg.textContent = `${userName}: ${message}`;
+        msg.classList.add("message");
 
+        // Определяем, кто отправил сообщение
+        if (userName === user) {
+            msg.classList.add("from-self");
+        } else {
+            msg.classList.add("from-others");
+        }
+
+        //добавляем тональность сообщения
         switch (sentiment)
         {
             case "Positive": msg.classList.add("positive-msg"); break;
@@ -66,6 +75,11 @@ connection.on("ReceiveMessage", (userName, chatName, message, sentiment) =>
         }
 
         document.getElementById("messages").appendChild(msg);
+
+        //прокрутка диалога вниз
+        const messagesDiv = document.getElementById("messages");
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
     }
 });
 
