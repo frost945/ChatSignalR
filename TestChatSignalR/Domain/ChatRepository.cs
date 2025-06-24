@@ -6,11 +6,11 @@ namespace TestChatSignalR.Domain
 {
     public class ChatRepository
     {
-        private readonly ChatDbContext _context;
+        private readonly ChatDbContext context;
 
-        public ChatRepository(ChatDbContext context)
+        public ChatRepository(ChatDbContext Context)
         {
-            _context = context;
+            context = Context;
         }
 
         //в процессе доработки

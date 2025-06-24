@@ -7,44 +7,44 @@ namespace TestChatSignalR.Hubs
 {
     public class ChatHub : Hub
     {
-        private readonly SentimentService _sentimentService;
-        private readonly ChatDbContext _db;
-        private readonly ChatRepository _chatRepository;
+        private readonly SentimentService sentimentService;
+        private readonly ChatDbContext db;
+        private readonly ChatRepository chatRepository;
 
-        public ChatHub(ChatDbContext db, ChatRepository chatRepository, SentimentService sentimentService)
+        public ChatHub(ChatDbContext Db, ChatRepository ChatRepository, SentimentService SentimentService)
         {
-            _db = db;
-            _chatRepository = chatRepository;
-            _sentimentService = sentimentService;
+            db = Db;
+            chatRepository = ChatRepository;
+            sentimentService = SentimentService;
         }
 
         public async Task joinChat(UserConnection userConnection)
         {
             Console.WriteLine("joinChat on");
-            Console.WriteLine($"{userConnection.UserName} {userConnection.ChatName}");
-            await Groups.AddToGroupAsync(Context.ConnectionId, userConnection.ChatName);
+            Console.WriteLine($"{userConnection.userName} {userConnection.chatName}");
+            await Groups.AddToGroupAsync(Context.ConnectionId, userConnection.chatName);
 
-            await Clients.Group(userConnection.ChatName).SendAsync("ReceiveMessage", "admin", userConnection.ChatName, $"{userConnection.UserName} присоединился к чату");
+            await Clients.Group(userConnection.chatName).SendAsync("ReceiveMessage", "admin", userConnection.chatName, $"{userConnection.userName} присоединился к чату");
         }
 
-        public async Task SendMessage(UserConnection userConnection, string message)
+        public async Task SendMessage(UserConnection userConnection, string Message)
         {
             Console.WriteLine("sendMessage on");
-            Console.WriteLine($"{userConnection.UserName} {userConnection.ChatName} {message}");
+            Console.WriteLine($"{userConnection.userName} {userConnection.chatName} {Message}");
 
             ChatMessage chatMessage = new ChatMessage
             {
-                UserName = userConnection.UserName,
-                ChatName = userConnection.ChatName,
-                Message = message
+                userName = userConnection.userName,
+                chatName = userConnection.chatName,
+                message = Message
             };
 
-            _db.ChatMessages.Add(chatMessage);
-            await _db.SaveChangesAsync();
+            db.chatMessages.Add(chatMessage);// добавляем в БД сообщение
+            await db.SaveChangesAsync();
 
-            string sentiment = await _sentimentService.AnalyzeSentimentAsync(message);
+            string sentiment = await sentimentService.AnalyzeSentimentAsync(Message);
 
-            await Clients.Group(userConnection.ChatName).SendAsync("ReceiveMessage", userConnection.UserName, userConnection.ChatName, message, sentiment);
+            await Clients.Group(userConnection.chatName).SendAsync("ReceiveMessage", userConnection.userName, userConnection.chatName, Message, sentiment);
         }
 
         /*public async Task LoadChatHistory(string chat, int skip = 0)
