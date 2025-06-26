@@ -5,9 +5,7 @@ namespace TestChatSignalR.Domain
 {
     public class ChatDbContext: DbContext
     {
-       // public ChatDbContext(DbContextOptions<ChatDbContext> options) : base(options) { }
-
-        //public DbSet<ChatMessage> ChatMessages { get; set; }
-
+        public ChatDbContext(DbContextOptions<ChatDbContext> options) : base(options) { }
+        public DbSet<ChatMessage> chatMessages { get; set; }
     }
 }

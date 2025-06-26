@@ -3,9 +3,9 @@
     public class ChatMessage
     {
         public int Id { get; set; }
-        public string UserName { get; set; }
-        public string ChatName { get; set; }
-        public string Message { get; set; }
-        public DateTime SentAt { get; set; } = DateTime.Now;
+        public string userName { get; set; }
+        public string chatName { get; set; }
+        public string message { get; set; }
+        public DateTime sentAt { get; set; } = DateTime.Now;
     }
 }

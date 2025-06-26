@@ -1,5 +1,5 @@
 ﻿namespace TestChatSignalR.Models
 {
-    public record class UserConnection(string UserName, string ChatName);
+    public record class UserConnection(string userName, string chatName);
     
 }
