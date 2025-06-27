@@ -18,11 +18,18 @@ namespace TestChatSignalR
 
             builder.Services.AddSignalR();
 
-            builder.Services.AddSingleton(provider =>
+            //подключаю анализатор настроений
+            builder.Services.AddSingleton<ISentimentService>(provider =>
             {
                 var config = provider.GetRequiredService<IConfiguration>();
-                var endpoint = config["AzureCognitiveServices:Endpoint"];
-                var key = config["AzureCognitiveServices:Key"];
+                string? endpoint = config["AzureCognitiveServices:Endpoint"];
+                string? key = config["AzureCognitiveServices:Key"];
+
+                if (string.IsNullOrWhiteSpace(endpoint) || string.IsNullOrWhiteSpace(key))
+                {
+                    Console.WriteLine("SentimentService отключён: отсутствует конфигурация");
+                    return new SentimentServiceStub(); // заглушка
+                }
                 return new SentimentService(endpoint, key);
             });
 

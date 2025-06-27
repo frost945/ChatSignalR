@@ -7,15 +7,15 @@ namespace TestChatSignalR.Hubs
 {
     public class ChatHub : Hub
     {
-        private readonly SentimentService sentimentService;
+        private readonly ISentimentService iSentimentService;
         private readonly ChatDbContext db;
         private readonly ChatRepository chatRepository;
 
-        public ChatHub(ChatDbContext Db, ChatRepository ChatRepository, SentimentService SentimentService)
+        public ChatHub(ChatDbContext Db, ChatRepository ChatRepository, ISentimentService ISentimentService)
         {
             db = Db;
             chatRepository = ChatRepository;
-            sentimentService = SentimentService;
+            iSentimentService = ISentimentService;
         }
 
         public async Task joinChat(UserConnection userConnection)
@@ -42,7 +42,7 @@ namespace TestChatSignalR.Hubs
             db.chatMessages.Add(chatMessage);// добавляем в БД сообщение
             await db.SaveChangesAsync();
 
-            string sentiment = await sentimentService.AnalyzeSentimentAsync(Message);
+            string sentiment = await iSentimentService.AnalyzeSentimentAsync(Message);
 
             await Clients.Group(userConnection.chatName).SendAsync("ReceiveMessage", userConnection.userName, userConnection.chatName, Message, sentiment);
         }

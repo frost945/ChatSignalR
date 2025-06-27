@@ -3,7 +3,12 @@ using Azure.AI.TextAnalytics;
 
 namespace TestChatSignalR.Services
 {
-    public class SentimentService
+    public interface ISentimentService
+    {
+        Task<string> AnalyzeSentimentAsync(string message);
+    }
+
+    public class SentimentService : ISentimentService
     {
 
         private readonly TextAnalyticsClient client;
@@ -18,6 +23,15 @@ namespace TestChatSignalR.Services
         {
             DocumentSentiment result = await client.AnalyzeSentimentAsync(message);
             return result.Sentiment.ToString(); // Возвращает: Positive, Neutral, или Negative
+        }
+    }
+
+    //класс заглушка на случай если SentimentService не будет работать
+    public class SentimentServiceStub : ISentimentService
+    {
+        public Task<string> AnalyzeSentimentAsync(string message)
+        {
+            return Task.FromResult("Neutral"); // по умолчанию
         }
     }
 }
