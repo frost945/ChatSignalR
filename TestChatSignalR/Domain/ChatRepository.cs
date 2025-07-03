@@ -14,14 +14,14 @@ namespace TestChatSignalR.Domain
         }
 
         //в процессе доработки
-        /*public async Task<List<ChatMessage>> GetMessagesAsync(string chatName, int count = 50, int skip = 0)
+        public async Task<List<ChatMessage>> GetMessagesAsync(string ChatName, int count, int skip)
         {
-            return await _context.ChatMessages
-                .Where(m => m.ChatName == chatName)
-                .OrderByDescending(m => m.SentAt)
+            return await context.chatMessages
+                .Where(m => m.chatName == ChatName)
+                .OrderByDescending(m => m.sentAt)
                 .Skip(skip)
                 .Take(count)
                 .ToListAsync();
-        }*/
+        }
     }
 }

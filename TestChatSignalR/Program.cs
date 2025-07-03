@@ -9,11 +9,12 @@ namespace TestChatSignalR
     {
         public static async Task Main()
         {
-            var builder = WebApplication.CreateBuilder();
+            WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
             builder.Services.AddDbContext<ChatDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            //хранилище сообщений
             builder.Services.AddScoped<ChatRepository>();
 
             builder.Services.AddSignalR();
@@ -21,7 +22,7 @@ namespace TestChatSignalR
             //подключаю анализатор настроений
             builder.Services.AddSingleton<ISentimentService>(provider =>
             {
-                var config = provider.GetRequiredService<IConfiguration>();
+                IConfiguration config = provider.GetRequiredService<IConfiguration>();
                 string? endpoint = config["AzureCognitiveServices:Endpoint"];
                 string? key = config["AzureCognitiveServices:Key"];
 
@@ -34,7 +35,7 @@ namespace TestChatSignalR
             });
 
 
-            var app = builder.Build();
+            WebApplication app = builder.Build();           
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
