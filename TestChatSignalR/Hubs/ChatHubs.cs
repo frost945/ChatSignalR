@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System;
 using TestChatSignalR.Domain;
 using TestChatSignalR.Models;
 using TestChatSignalR.Services;
@@ -22,12 +23,16 @@ namespace TestChatSignalR.Hubs
         {
             Console.WriteLine("joinChat on");
             Console.WriteLine($"{userConnection.userName} {userConnection.chatName}");
-            await Groups.AddToGroupAsync(Context.ConnectionId, userConnection.chatName);
 
-            await Clients.Group(userConnection.chatName).SendAsync("ReceiveMessage", "admin", userConnection.chatName, $"{userConnection.userName} присоединился к чату");
+            //вывод истории чата
+            await LoadChatHistory(userConnection.chatName);
+
+            //вывод сообщения о присоединении
+            await Groups.AddToGroupAsync(Context.ConnectionId, userConnection.chatName);
+            await Clients.Group(userConnection.chatName).SendAsync("receiveMessage", "admin", userConnection.chatName, $"{userConnection.userName} присоединился к чату");
         }
 
-        public async Task SendMessage(UserConnection userConnection, string Message)
+        public async Task sendMessage(UserConnection userConnection, string Message)
         {
             Console.WriteLine("sendMessage on");
             Console.WriteLine($"{userConnection.userName} {userConnection.chatName} {Message}");
@@ -44,19 +49,27 @@ namespace TestChatSignalR.Hubs
 
             string sentiment = await iSentimentService.AnalyzeSentimentAsync(Message);
 
-            await Clients.Group(userConnection.chatName).SendAsync("ReceiveMessage", userConnection.userName, userConnection.chatName, Message, sentiment);
+            await Clients.Group(userConnection.chatName).SendAsync("receiveMessage", userConnection.userName, userConnection.chatName, Message, sentiment);
         }
 
-        /*public async Task LoadChatHistory(string chat, int skip = 0)
+        public async Task LoadChatHistory(string chat, int skip = 0)
         {
-            Console.WriteLine("LoadChatHistory on");
-            List<ChatMessage> messages = await _chatRepository.GetMessagesAsync(chat, 50, skip);
+            Console.WriteLine("loadChatHistory on");
+            Console.WriteLine($"skip: {skip}");
+            int countMessages = 20; // Количество сообщений для загрузки
+            List<ChatMessage> messages = await chatRepository.GetMessagesAsync(chat, countMessages, skip);
+
+            //если проверка истинна, то досрочно завершаем метод, чтобы лишний раз не отправлять сообщения на клиент
+            if (messages == null || messages.Count == 0)
+            {
+                Console.WriteLine("No more messages to load.");
+                return;
+            }
 
             // Отправляем клиенту список сообщений
             Console.WriteLine($"Sending {messages.Count} messages to client...");
 
-            await Clients.Caller.SendAsync("ReceiveHistory", chat, messages);
-        }*/
-
+            await Clients.Caller.SendAsync("receiveHistory",  messages);
+        }
     }
 }
